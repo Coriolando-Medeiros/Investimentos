@@ -56,56 +56,27 @@ class Carteira
     end
 
     def extrair_campos(linha)
-        
-        # Expressões regulares para capturar os campos
-        investimento = linha.match(/Investimento:\s*(.*?)(?=\s*,|\z)/)[1]
-        retorno = linha.match(/Retorno:\s*([\d.]+)\s*%/)[1].to_f
-        aporte_inicial = linha.match(/Aporte inicial:\s*R\$ ([\d.,]+)/)[1].gsub(',', '.').to_f
-        data_str = linha.match(/Data:\s*([\d\/]+)/)[1]
-        data = Date.strptime(data_str, "%d/%m/%Y")
+        investimento_match = linha.match(/Investimento:\s*(.*?)(?=\s*,|\z)/)
+        retorno_match = linha.match(/Retorno:\s*([\d.]+)\s*%/)
+        aporte_inicial_match = linha.match(/Aporte inicial:\s*R\$ ([\d.,]+)/)
+        data_match = linha.match(/Data:\s*([\d\/]+)/)
       
-        { investimento: investimento, retorno: retorno, aporte_inicial: aporte_inicial, data: data }
-    end
-
-    def calcular_retorno
-        puts "Calcular retorno"
-        if File.exist?("investimentos.txt") && !File.zero?("investimentos.txt")
-            print "Nome: "
-            nome = gets.chomp.upcase
-            @clientes = File.readlines("investimentos.txt")
-
-            cliente_nome = @clientes.select { |cliente| cliente.include?(nome)}
-
-            cliente_nome.map!(&:chomp)
-
-            #puts cliente_nome
-
-            datas = []
-
-            cliente_nome.each do |cliente|
-                elementos = cliente.split(" ")  # Divide a linha em partes
-                data_str = elementos.last       # Pega o último elemento (a data)
-
-                # Converter a string de data para um objeto Date e armazenar no array
-                data = Date.strptime(data_str, "%d/%m/%Y")  # Ajuste o formato conforme necessário
-                datas << data
-            end
-
-            # Exibir as datas convertidas
-            puts "Datas: #{datas}"
-
-            # Exemplo de cálculo com datas
-            # Subtrair a primeira data da segunda (se houver mais de uma)
-            if datas.length > 1
-                diferenca = datas[1] - datas[0]  # Diferença em dias
-                puts "Diferença entre as duas primeiras datas: #{diferenca} dias"
-            end
-
+        if investimento_match && retorno_match && aporte_inicial_match && data_match
+          investimento = investimento_match[1]
+          retorno = retorno_match[1].to_f
+          aporte_inicial = aporte_inicial_match[1].gsub(',', '.').to_f
+          data_str = data_match[1]
+          data = Date.strptime(data_str, "%d/%m/%Y")
+      
+          { investimento: investimento, retorno: retorno, aporte_inicial: aporte_inicial, data: data }
         else
-            puts "Arquivo inexistente!"
+          puts "Linha não corresponde ao formato esperado: #{linha}"
+          nil
         end
     end
+
+    
 end
 
 investir = Carteira.new
-investir.mostrar
+investir.calcular_retorno
