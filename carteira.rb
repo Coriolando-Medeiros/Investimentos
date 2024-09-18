@@ -49,6 +49,7 @@ class Carteira
             elsif escolha == ''
                 puts "Saindo..."
                 return
+            end
         end
     end
 
