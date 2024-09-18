@@ -75,7 +75,36 @@ class Carteira
         end
     end
 
-    
+    def calcular_retorno
+        puts "Calcular retorno"
+        if File.exist?("investimentos.txt") && !File.zero?("investimentos.txt")
+            print "Nome: "
+            nome = gets.chomp.upcase
+            clientes = File.readlines("investimentos.txt")
+          
+            clientes_selecionados = clientes.select { |cliente| cliente.include?(nome) }
+          
+            clientes_selecionados.each do |linha|
+              campos = extrair_campos(linha)
+              
+              if campos
+                investimento = campos[:investimento]
+                retorno = campos[:retorno]
+                aporte_inicial = campos[:aporte_inicial]
+                data = campos[:data]
+          
+                puts "Investimento: #{investimento}"
+                puts "Retorno: #{retorno}%"
+                puts "Aporte Inicial: R$ #{aporte_inicial}"
+                puts "Data: #{data}"
+          
+                # Ainda vou adicionar os cálculo aqui
+              end
+            end
+        else
+            puts "Arquivo inexistente!"
+        end
+    end
 end
 
 investir = Carteira.new
