@@ -97,8 +97,15 @@ class Carteira
                 puts "Retorno: #{retorno}%"
                 puts "Aporte Inicial: R$ #{aporte_inicial}"
                 puts "Data: #{data}"
+
+                #Ainda preciso gerar uma função para fazer a diferença
+                #de dias entre as datas
+                #dias = 20 é só um exemplo
+                dias = 20
           
                 # Ainda vou adicionar os cálculo aqui
+                retorno_investimento = aporte_inicial * (retorno / 100) * dias
+                puts retorno_investimento
               end
             end
         else
