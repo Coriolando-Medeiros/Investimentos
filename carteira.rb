@@ -80,6 +80,7 @@ class Carteira
         if File.exist?("investimentos.txt") && !File.zero?("investimentos.txt")
             print "Nome: "
             nome = gets.chomp.upcase
+            puts ""
             clientes = File.readlines("investimentos.txt")
           
             clientes_selecionados = clientes.select { |cliente| cliente.include?(nome) }
@@ -96,16 +97,21 @@ class Carteira
                 puts "Investimento: #{investimento}"
                 puts "Retorno: #{retorno}%"
                 puts "Aporte Inicial: R$ #{aporte_inicial}"
-                puts "Data: #{data}"
+                puts "Data investimento : #{data}"
 
-                #Ainda preciso gerar uma função para fazer a diferença
-                #de dias entre as datas
-                #dias = 20 é só um exemplo
-                dias = 20
+                
+                hoje = Date.today
+                puts "Hoje: #{hoje}"
+                
+                dias = (hoje - data).to_i
+                meses = dias / 30.42
+                puts "#{'%.2f' % dias} dias"
+                puts "#{'%.2f' % meses} meses"
           
-                # Ainda vou adicionar os cálculo aqui
-                retorno_investimento = aporte_inicial * (retorno / 100) * dias
-                puts retorno_investimento
+               
+                retorno_investimento = aporte_inicial * ((1 + retorno / 100) ** meses)
+                puts "Retorno bruto: R$ #{'%.2f' % retorno_investimento}"
+                puts ""
               end
             end
         else
@@ -113,6 +119,3 @@ class Carteira
         end
     end
 end
-
-investir = Carteira.new
-investir.calcular_retorno

@@ -6,7 +6,7 @@ class Investidor
         @cliente = []
         puts "Cadastrar investidor"
         print "Nome: "
-        nome = gets.chomp
+        nome = gets.chomp.upcase
         print "Endereço: "
         endereco = gets.chomp
         print "CPF: "
@@ -23,6 +23,3 @@ class Investidor
     def fazer_aporte
     end
 end
-
-investidor = Investidor.new
-investidor.cliente

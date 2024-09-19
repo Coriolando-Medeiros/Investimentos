@@ -1,3 +1,5 @@
+require 'date'
+
 class Investimentos
 
     def initialize
@@ -5,11 +7,11 @@ class Investimentos
         dados_formatados = []
     end
     def investir
-        require 'date'
+        
         data_hoje = Date.today
         puts "Investir"
         print "Cliente: "
-        cliente = gets.chomp
+        cliente = gets.chomp.upcase
         print "Taxa de retorno: "
         retorno = gets.chomp.to_f
         print "Aporte inicial: R$ "
@@ -93,7 +95,7 @@ class Investimentos
             imovel = gets.chomp.upcase
             investimento = imovel
 
-            @invetsimentos = { investimento: investimento, retorno: retorno, aporte: aporte_inicial}
+            @investimentos = { investimento: investimento, retorno: retorno, aporte: aporte_inicial}
             dados_formatados = "cliente: #{cliente} | Investimento: #{@investimentos[:investimento]}, Retorno: #{'%.1f' % @investimentos[:retorno]} %, Aporte inicial: R$ #{'%.2f' % @investimentos[:aporte]}, Data: #{data_hoje.strftime("%d/%m/%Y")}"
 
             File.open("investimentos.txt", "a") do |arquivo|
@@ -169,6 +171,3 @@ class Investimentos
         puts @investimentos
     end
 end
-
-investir = Investimentos.new
-investir.investir
